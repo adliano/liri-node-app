@@ -1,5 +1,11 @@
 // https://rest.bandsintown.com/artists/metalica/events?app_id=codingbootcamp
-let bandURL = `https://rest.bandsintown.com/${artists}/metalica/events?`;
+// let bandURL = `https://rest.bandsintown.com/${artists}/metalica/events?`;
+
+const colors = {
+  red: "\x1b[31m",
+  green: "\x1b[32m",
+  reset: "\x1b[0m"
+};
 
 //require("./.env").config();
 
@@ -31,6 +37,6 @@ switch (process.argv[2]) {
     console.log("inside do-what-it-says");
     break;
   default:
-    console.error(`%cInvalid Command`, `color:red;`);
+    console.error(colors.red, `Invalid Command "${process.argv[2]}"`);
     break;
 }
