@@ -1,5 +1,6 @@
 // https://rest.bandsintown.com/artists/metalica/events?app_id=codingbootcamp
 // let bandURL = `https://rest.bandsintown.com/${artists}/metalica/events?`;
+// npm install dotenv
 
 const colors = {
   red: "\x1b[31m",
