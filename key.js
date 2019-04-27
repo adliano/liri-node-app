@@ -1,4 +1,6 @@
 console.log("loading spotify keys.js");
+// npm install dotenv
+require("dotenv").config();
 
 exports.spotify = {
   id: process.env.SPOTIFY_ID,

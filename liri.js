@@ -1,6 +1,28 @@
 // https://rest.bandsintown.com/artists/metalica/events?app_id=codingbootcamp
 // let bandURL = `https://rest.bandsintown.com/${artists}/metalica/events?`;
-// npm install dotenv
+
+
+// npm install moment
+let moment = require('moment');
+
+let keys = require("./key");
+
+console.log(moment().date());
+
+// https://www.npmjs.com/package/node-spotify-api
+// npm install --save node-spotify-api
+let Spotify = require('node-spotify-api');
+
+var spotify = new Spotify(keys.spotify);
+
+let spotifySearch = {
+  type: 'track',
+  query: 'All the Small Things'
+};
+
+spotify.search(spotifySearch)
+.then((response) => console.log(response.tracks.items[0].album.name));
+
 
 const colors = {
   red: "\x1b[31m",
@@ -8,9 +30,9 @@ const colors = {
   reset: "\x1b[0m"
 };
 
-//require("./.env").config();
 
-//let keys = require("./keys.js");
+
+
 
 //let usrInput = process.argv;
 
