@@ -8,5 +8,9 @@ exports.spotify = {
 };
 
 exports.bandintown = {
-  id: process.env.BAND_KEY
+  id: process.env.BIT_ID
+};
+
+exports.imdb = {
+  key: process.env.IMDB_KEY
 };

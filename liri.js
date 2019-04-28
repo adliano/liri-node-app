@@ -30,7 +30,7 @@ switch (process.argv[2]) {
     spotifyThis("Hear me now");
     break;
   case "movie-this":
-    movieThis("Movie name");
+    movieThis(process.argv[3]);
     break;
   case "do-what-it-says":
     console.log("inside do-what-it-says");
@@ -57,8 +57,9 @@ for an artist and render the following information about each event to the termi
    * Date of the Event (use moment to format this as "MM/DD/YYYY")
  */
 function consertThis(artist) {
+  const BIT_ID = keys.bandintown.id;
   // API URL used for request
-  let url = `https://rest.bandsintown.com/artists/${artist}/events?app_id=codingbootcamp`;
+  let url = `https://rest.bandsintown.com/artists/${artist}/events?app_id=${BIT_ID}`;
   // Send request using Axios and Promisses
   axios.get(url).then(response => {
     // Loop through Object data to display each info
@@ -147,6 +148,50 @@ It's on Netflix!
 You'll use the axios package to retrieve data from the OMDB API. 
 Like all of the in-class activities, the OMDB API requires an API key. You may use trilogy.
  */
-function movieThis(monvie) {
-  console.log("movieThis called");
+function movieThis(monvie = "Mr. Nobody") {
+  const IMDB_KEY = keys.imdb.key;
+  let _url = `http://www.omdbapi.com/?apikey=${IMDB_KEY}&t=${monvie}`;
+  axios
+    .get(_url)
+    .then(response => response.data)
+    .then(dataObj => {
+      console.log("-".repeat(65));
+      console.log(`Title : ${dataObj.Title}`);
+      console.log(`Release Year : ${dataObj.Released.split(" ")[2]}`);
+      console.log(`IMDB Rating : ${dataObj.Ratings[0].Value}`);
+      console.log(`Rotten Tomatoes Rating : ${dataObj.Ratings[1].Value}`);
+      console.log(`Country : ${dataObj.Country}`);
+      console.log(`Language : ${dataObj.Language}`);
+      console.log(`Plot : ${dataObj.Plot}`);
+      console.log(`Actors : ${dataObj.Actors}`);
+      console.log("-".repeat(65));
+    });
 }
+
+// Notes
+// function parseStr(str) {
+//   //   console.log(str);
+//   let _strArr = str.split(" ");
+//   let _output = [];
+//   let _tempStr = "";
+//   for (let _item of _strArr) {
+//     _tempStr += `${_item} `;
+//     if (_tempStr.length > 55 || false) {
+//       _output.push(_tempStr);
+//       _tempStr = "";
+//     }
+//   }
+//   return _output.join("\n");
+// }
+/*
+// console.log(dataObj);
+// let plotText = dataObj.Plot.split(".");
+// console.log(String.replace(num, "5", "2"));
+// let plotText = dataObj.Plot.split(/[.!?]/g).join(`$&\n`);
+// let plotText = dataObj.Plot.replace(/[.!?]/g, `$&\n`);
+// console.log(plotText);
+//`Plot : ${dataObj.Plot.replace(/[.!?]/g, `$&\t\n`)}`,
+//print(_outputInfo, { sideSymbol: "" });
+//print([`Plot : ${dataObj.Plot}`], { border: false });
+//console.log(parseStr(dataObj.Plot));
+*/
