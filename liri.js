@@ -15,21 +15,6 @@ let axios = require("axios");
 // PrintMessage
 let print = require("print-message");
 
-const colors = {
-  blue: "\x1b[94m",
-  cyan: "\x1b[36m",
-  red: "\x1b[31m",
-  green: "\x1b[32m",
-  reset: "\x1b[0m"
-};
-
-// Debug Momentjs
-console.log(
-  colors.green,
-  `Momentjs is working, ${moment("2019-10-26T19:00:56").format("MM-DD-YYYY")}`,
-  colors.reset
-);
-
 /* commands
  concert-this
  spotify-this-song
@@ -42,7 +27,7 @@ switch (process.argv[2]) {
     consertThis("alok");
     break;
   case "spotify-this-song":
-    console.log("inside spotify-this-song");
+    spotifyThis("Hear me now");
     break;
   case "movie-this":
     console.log("inside movie-this");
@@ -55,18 +40,6 @@ switch (process.argv[2]) {
     break;
 }
 
-// Spotify //
-var spotify = new Spotify(keys.spotify);
-
-let spotifySearch = {
-  type: "track",
-  query: "All the Small Things"
-};
-
-spotify
-  .search(spotifySearch)
-  .then(response => console.log(response.tracks.items[0].album.name));
-
 /* ******************************************************************* */
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 /* ******************************************************************* */
@@ -74,6 +47,15 @@ spotify
 /* ******************************************************************* */
 /* * * * * * * * * * * * * * consertThis() * * * * * * * * * * * * * * */
 /* ******************************************************************* */
+/*
+node liri.js concert-this <artist/band name here>
+This will search the Bands in Town Artist Events API 
+(`https://rest.bandsintown.com/artists/${artist}events?app_id=codingbootcamp`)
+for an artist and render the following information about each event to the terminal:
+   * Name of the venue
+   * Venue location
+   * Date of the Event (use moment to format this as "MM/DD/YYYY")
+ */
 function consertThis(artist) {
   // API URL used for request
   let url = `https://rest.bandsintown.com/artists/${artist}/events?app_id=codingbootcamp`;
@@ -94,4 +76,54 @@ function consertThis(artist) {
       print(_venue);
     }
   });
+}
+/* ******************************************************************* */
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+/* ******************************************************************* */
+/*
+node liri.js spotify-this-song '<song name here>'
+This will show the following information about the song in your terminal/bash window
+    * Artist(s)
+    * The song's name
+    * A preview link of the song from Spotify
+    * The album that the song is from
+If no song is provided then your program will default to "The Sign" by Ace of Base.
+You will utilize the node-spotify-api package in order to retrieve song information from the Spotify API.
+The Spotify API requires you sign up as a developer to generate the necessary credentials. You can follow these steps in order to generate a client id and client secret:
+    * Step One: Visit https://developer.spotify.com/my-applications/#!/
+    * Step Two: Either login to your existing Spotify account or create a new one (a free account is fine) and log in.
+    * Step Three: Once logged in, navigate to https://developer.spotify.com/my-applications/#!/applications/create to register a new application to be used with the Spotify API. You can fill in whatever you'd like for these fields. When finished, click the "complete" button.
+    * Step Four: On the next screen, scroll down to where you see your client id and client secret. Copy these values down somewhere, you'll need them to use the Spotify API and the node-spotify-api package.
+ */
+function spotifyThis(song) {
+  // Get Spotify keys
+  var spotify = new Spotify(keys.spotify);
+  // Set the search query
+  let spotifySearch = {
+    type: "track",
+    query: song
+  };
+  // send request for Spotify API
+  spotify
+    .search(spotifySearch)
+    // get the results from API (Promisses)
+    .then(response => {
+      // Loop thruogh tracks
+      for (let data of response.tracks.items) {
+        // Place track info into array
+        let _info = [
+          // Get Artist Name
+          `Artist : ${data.artists[0].name}`,
+          // Get Track Name
+          `Track : ${data.name}`,
+          // Get Track URL
+          `Link : ${data.external_urls.spotify}`,
+          // Get Track Album
+          `Album : ${data.album.name}`
+        ];
+        // Use print-message to Display Info
+        print(_info);
+        //console.log(data);
+      }
+    });
 }
