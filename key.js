@@ -1,4 +1,4 @@
-console.log("loading spotify keys.js");
+// console.log("loading spotify keys.js");
 // npm install dotenv
 // require("dotenv").config();
 

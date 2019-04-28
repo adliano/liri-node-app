@@ -30,7 +30,7 @@ switch (process.argv[2]) {
     spotifyThis("Hear me now");
     break;
   case "movie-this":
-    console.log("inside movie-this");
+    movieThis("Movie name");
     break;
   case "do-what-it-says":
     console.log("inside do-what-it-says");
@@ -77,9 +77,9 @@ function consertThis(artist) {
     }
   });
 }
-/* ******************************************************************* */
-/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-/* ******************************************************************* */
+/* ****************************************************************** */
+/* * * * * * * * * * * * * * spotifyThis()  * * * * * * * * * * * * * */
+/* ****************************************************************** */
 /*
 node liri.js spotify-this-song '<song name here>'
 This will show the following information about the song in your terminal/bash window
@@ -126,4 +126,27 @@ function spotifyThis(song) {
         //console.log(data);
       }
     });
+}
+/* ******************************************************************* */
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+/* ******************************************************************* */
+/*
+node liri.js movie-this '<movie name here>'
+This will output the following information to your terminal/bash window:
+  * Title of the movie.
+  * Year the movie came out.
+  * IMDB Rating of the movie.
+  * Rotten Tomatoes Rating of the movie.
+  * Country where the movie was produced.
+  * Language of the movie.
+  * Plot of the movie.
+  * Actors in the movie.
+If the user doesn't type a movie in, the program will output data for the movie 'Mr. Nobody.'
+If you haven't watched "Mr. Nobody," then you should: http://www.imdb.com/title/tt0485947/
+It's on Netflix!
+You'll use the axios package to retrieve data from the OMDB API. 
+Like all of the in-class activities, the OMDB API requires an API key. You may use trilogy.
+ */
+function movieThis(monvie) {
+  console.log("movieThis called");
 }
