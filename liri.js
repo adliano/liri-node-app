@@ -1,6 +1,19 @@
 // https://rest.bandsintown.com/artists/metalica/events?app_id=codingbootcamp
 // let bandURL = `https://rest.bandsintown.com/${artists}/metalica/events?`;
 // https://www.npmjs.com/package/print-message
+// https://www.npmjs.com/package/node-spotify-api
+
+require("dotenv").config();
+// Add the code required to import the keys.js file and store it in a variable.
+let keys = require("./key");
+// npm install moment
+let moment = require("moment");
+// Spotify
+let Spotify = require("node-spotify-api");
+// axios
+let axios = require("axios");
+// PrintMessage
+let print = require("print-message");
 
 const colors = {
   blue: "\x1b[94m",
@@ -10,23 +23,12 @@ const colors = {
   reset: "\x1b[0m"
 };
 
-require("dotenv").config();
-
-// Add the code required to import the keys.js file and store it in a variable.
-let keys = require("./key");
-
-// npm install moment
-let moment = require("moment");
-
 // Debug Momentjs
 console.log(
   colors.green,
   `Momentjs is working, ${moment("2019-10-26T19:00:56").format("MM-DD-YYYY")}`,
   colors.reset
 );
-
-// https://www.npmjs.com/package/node-spotify-api
-let Spotify = require("node-spotify-api");
 
 /* commands
  concert-this
@@ -73,16 +75,23 @@ spotify
 /* * * * * * * * * * * * * * consertThis() * * * * * * * * * * * * * * */
 /* ******************************************************************* */
 function consertThis(artist) {
-  console.log("inside consert this function");
-  let axios = require("axios");
+  // API URL used for request
   let url = `https://rest.bandsintown.com/artists/${artist}/events?app_id=codingbootcamp`;
+  // Send request using Axios and Promisses
   axios.get(url).then(response => {
+    // Loop through Object data to display each info
     for (let item of response.data) {
-      console.log(colors.blue, "----------------------", colors.reset);
-      console.log(`Name : ${item.venue.name}`);
-      console.log(`Location : ${item.venue.city}, ${item.venue.country}`);
-      let _date = moment(item.datetime).format("MM-DD-YYYY");
-      console.log(`Date : ${_date}`);
+      // create a array to print info using print-message package
+      let _venue = [
+        // get venue name
+        `Name : ${item.venue.name}`,
+        // get venue location (city, country)
+        `Location : ${item.venue.city}, ${item.venue.country}`,
+        // get venue date (MM-DD-YYYY)
+        `Date : ${moment(item.datetime).format("MM-DD-YYYY")}`
+      ];
+      // print-message
+      print(_venue);
     }
   });
 }
