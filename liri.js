@@ -1,6 +1,12 @@
 // https://rest.bandsintown.com/artists/metalica/events?app_id=codingbootcamp
 // let bandURL = `https://rest.bandsintown.com/${artists}/metalica/events?`;
 
+const colors = {
+  red: "\x1b[31m",
+  green: "\x1b[32m",
+  reset: "\x1b[0m"
+};
+
 require("dotenv").config();
 
 // Add the code required to import the keys.js file and store it in a variable.
@@ -9,32 +15,15 @@ let keys = require("./key");
 // npm install moment
 let moment = require("moment");
 
-console.log(moment().date());
+// Debug Momentjs
+console.log(
+  colors.green,
+  `Momentjs is working, today is ${moment().date()}`,
+  colors.reset
+);
 
 // https://www.npmjs.com/package/node-spotify-api
 let Spotify = require("node-spotify-api");
-
-var spotify = new Spotify(keys.spotify);
-
-let spotifySearch = {
-  type: "track",
-  query: "All the Small Things"
-};
-
-spotify
-  .search(spotifySearch)
-  .then(response => console.log(response.tracks.items[0].album.name));
-
-const colors = {
-  red: "\x1b[31m",
-  green: "\x1b[32m",
-  reset: "\x1b[0m"
-};
-
-//let usrInput = process.argv;
-
-//console.log(keys.spotify);
-//console.dir(usrInput);
 
 /* commands
  concert-this
@@ -60,3 +49,15 @@ switch (process.argv[2]) {
     console.error(colors.red, `Invalid Command "${process.argv[2]}"`);
     break;
 }
+
+// Spotify //
+var spotify = new Spotify(keys.spotify);
+
+let spotifySearch = {
+  type: "track",
+  query: "All the Small Things"
+};
+
+spotify
+  .search(spotifySearch)
+  .then(response => console.log(response.tracks.items[0].album.name));
