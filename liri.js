@@ -1,38 +1,35 @@
 // https://rest.bandsintown.com/artists/metalica/events?app_id=codingbootcamp
 // let bandURL = `https://rest.bandsintown.com/${artists}/metalica/events?`;
 
+require("dotenv").config();
+
+// Add the code required to import the keys.js file and store it in a variable.
+let keys = require("./key");
 
 // npm install moment
-let moment = require('moment');
-
-let keys = require("./key");
+let moment = require("moment");
 
 console.log(moment().date());
 
 // https://www.npmjs.com/package/node-spotify-api
-// npm install --save node-spotify-api
-let Spotify = require('node-spotify-api');
+let Spotify = require("node-spotify-api");
 
 var spotify = new Spotify(keys.spotify);
 
 let spotifySearch = {
-  type: 'track',
-  query: 'All the Small Things'
+  type: "track",
+  query: "All the Small Things"
 };
 
-spotify.search(spotifySearch)
-.then((response) => console.log(response.tracks.items[0].album.name));
-
+spotify
+  .search(spotifySearch)
+  .then(response => console.log(response.tracks.items[0].album.name));
 
 const colors = {
   red: "\x1b[31m",
   green: "\x1b[32m",
   reset: "\x1b[0m"
 };
-
-
-
-
 
 //let usrInput = process.argv;
 
