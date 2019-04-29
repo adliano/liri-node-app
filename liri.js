@@ -7,16 +7,23 @@
 require("dotenv").config();
 // Add the code required to import the keys.js file and store it in a variable.
 let keys = require("./key");
-// npm install moment
+// npm moment
 let moment = require("moment");
-// Spotify
+// npm Spotify
 let Spotify = require("node-spotify-api");
-// axios
+// npm axios
 let axios = require("axios");
-// PrintMessage
+// npm PrintMessage
 let print = require("print-message");
 // File System
 let fs = require("fs");
+// Style used to print error msg
+const errorBoxStyle = {
+  color: "red",
+  borderColor: "red",
+  marginTop: 1,
+  marginBottom: 1
+};
 
 /* ******************************************************************* */
 /* * * * * * * * * * * * * * consertThis() * * * * * * * * * * * * * * */
@@ -29,23 +36,32 @@ function consertThis(artist) {
   // API URL used for request
   let url = `https://rest.bandsintown.com/artists/${artist}/events?app_id=${BIT_ID}`;
   // Send request using Axios and Promisses
-  axios.get(url).then(response => {
-    // Loop through Object data to display each info
-    for (let item of response.data) {
-      // for an artist and render the following information about each event to the terminal:
-      // create a array to print info using print-message package
-      let _venue = [
-        // * Name of the venue
-        `Name : ${item.venue.name}`,
-        // * Venue location (city, country)
-        `Location : ${item.venue.city}, ${item.venue.country}`,
-        // * Date of the Event (use moment to format this as "MM/DD/YYYY")
-        `Date : ${moment(item.datetime).format("MM-DD-YYYY")}`
-      ];
-      // print-message
-      print(_venue);
-    }
-  });
+  axios
+    .get(url)
+    .then(response => {
+      // Check if Artits have comming event(s)
+      if (response.data.length < 1) {
+        print([`No Event Found for ${artist}`], errorBoxStyle);
+      }
+      // Loop through Object data to display each info
+      for (let item of response.data) {
+        // for an artist and render the following information about each event to the terminal:
+        // create a array to print info using print-message package
+        let _venue = [
+          // * Name of the venue
+          `Name : ${item.venue.name}`,
+          // * Venue location (city, country)
+          `Location : ${item.venue.city}, ${item.venue.country}`,
+          // * Date of the Event (use moment to format this as "MM/DD/YYYY")
+          `Date : ${moment(item.datetime).format("MM-DD-YYYY")}`
+        ];
+        // print-message
+        print(_venue);
+      }
+    })
+    .catch(function(error) {
+      console.log("Error", error.message);
+    });
 }
 /* ****************************************************************** */
 /* * * * * * * * * * * * * * spotifyThis()  * * * * * * * * * * * * * */
@@ -64,14 +80,14 @@ The Spotify API requires you sign up as a developer to generate the necessary cr
     * Step Three: Once logged in, navigate to https://developer.spotify.com/my-applications/#!/applications/create to register a new application to be used with the Spotify API. You can fill in whatever you'd like for these fields. When finished, click the "complete" button.
     * Step Four: On the next screen, scroll down to where you see your client id and client secret. Copy these values down somewhere, you'll need them to use the Spotify API and the node-spotify-api package.
  */
-function spotifyThis(song = "The Sign") {
+function spotifyThis(song) {
   // Utilize the node-spotify-api package in order to retrieve
   // song information from the Spotify API.
   var spotify = new Spotify(keys.spotify);
   // Set the search query
   let spotifySearch = {
     type: "track",
-    query: song
+    query: song || "The Sign Ace of Base"
   };
   // send request for Spotify API
   spotify
@@ -95,19 +111,23 @@ function spotifyThis(song = "The Sign") {
         print(_info);
         //console.log(data);
       }
+    })
+    .catch(function(error) {
+      console.log("Error", error.message);
     });
 }
 /* ******************************************************************* */
 /* * * * * * * * * * * * * * movieThis() * * * * * * * * * * * * * * * */
 /* ******************************************************************* */
 // node liri.js movie-this '<movie name here>'
-// If the user doesn't type a movie in, the program will output data for the movie 'Mr. Nobody.'
 // http://www.imdb.com/title/tt0485947/
-function movieThis(monvie = "Mr. Nobody") {
+function movieThis(movie) {
+  // If the user doesn't type a movie in, the program will output data for the movie 'Mr. Nobody.'
+  movie = movie || "Mr. Nobody";
   // OMDB API requires an API key
   const IMDB_KEY = keys.imdb.key;
   // API URL
-  let _url = `http://www.omdbapi.com/?apikey=${IMDB_KEY}&t=${monvie}`;
+  let _url = `http://www.omdbapi.com/?apikey=${IMDB_KEY}&t=${movie}`;
   // use the axios package to retrieve data from the OMDB API.
   axios
     .get(_url)
@@ -115,6 +135,11 @@ function movieThis(monvie = "Mr. Nobody") {
     .then(response => response.data)
     // get the data object
     .then(dataObj => {
+      // Check if Movie its available
+      if (!dataObj.Title) {
+        print([`Movie "${movie}" not available`], errorBoxStyle);
+        return;
+      }
       // This will output the following information to your terminal/bash window:
       console.log("-".repeat(65));
       // * Title of the movie.
@@ -124,7 +149,8 @@ function movieThis(monvie = "Mr. Nobody") {
       // * IMDB Rating of the movie.
       console.log(`IMDB Rating : ${dataObj.Ratings[0].Value}`);
       // * Rotten Tomatoes Rating of the movie.
-      console.log(`Rotten Tomatoes Rating : ${dataObj.Ratings[1].Value}`);
+      let _rtr = dataObj.Ratings[1] ? dataObj.Ratings[1].Value : "N/A";
+      console.log(`Rotten Tomatoes Rating : ${_rtr}`);
       // * Country where the movie was produced.
       console.log(`Country : ${dataObj.Country}`);
       // * Language of the movie.
@@ -134,6 +160,9 @@ function movieThis(monvie = "Mr. Nobody") {
       // * Actors in the movie.
       console.log(`Actors : ${dataObj.Actors}`);
       console.log("-".repeat(65));
+    })
+    .catch(function(error) {
+      console.log("Error", error.message);
     });
 }
 /* ******************************************************************* */
@@ -141,7 +170,8 @@ function movieThis(monvie = "Mr. Nobody") {
 /* ******************************************************************* */
 /*
 node liri.js do-what-it-says
-Using the fs Node package, LIRI will take the text inside of random.txt and then use it to call one of LIRI's commands.
+Using the fs Node package, LIRI will take the text inside of random.txt
+ and then use it to call one of LIRI's commands.
 It should run spotify-this-song for "I Want it That Way," as follows the text in random.txt.
 Edit the text in random.txt to test out the feature for movie-this and concert-this.
 */
@@ -178,14 +208,9 @@ function runLiri(_command, _argv) {
       doWhatItSay();
       break;
     default:
-      print([`Invalid Command "${_command}"`], {
-        color: "red",
-        borderColor: "red",
-        marginTop: 2,
-        marginBottom: 2
-      });
+      print([`Invalid Command "${_command}"`], errorBoxStyle);
       break;
   }
 }
 ///////////////////////////////\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
-runLiri(process.argv[2], process.argv[3]);
+runLiri(process.argv[2], process.argv.slice(3).join(" "));
