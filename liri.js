@@ -140,8 +140,9 @@ function movieThis(movie) {
         print([`Movie "${movie}" not available`], errorBoxStyle);
         return;
       }
+      let _consoleWidth = process.stdout.columns;
       // This will output the following information to your terminal/bash window:
-      console.log("-".repeat(65));
+      console.log("-".repeat(_consoleWidth));
       // * Title of the movie.
       console.log(`Title : ${dataObj.Title}`);
       // * Year the movie came out.
@@ -159,7 +160,7 @@ function movieThis(movie) {
       console.log(`Plot : ${dataObj.Plot}`);
       // * Actors in the movie.
       console.log(`Actors : ${dataObj.Actors}`);
-      console.log("-".repeat(65));
+      console.log("-".repeat(_consoleWidth));
     })
     .catch(function(error) {
       console.log("Error", error.message);
@@ -214,3 +215,14 @@ function runLiri(_command, _argv) {
 }
 ///////////////////////////////\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
 runLiri(process.argv[2], process.argv.slice(3).join(" "));
+
+//console.log(`X : ${process.stdout.columns}\nY : ${process.stdout.rows}`);
+//console.log(process);
+//console.log("=".repeat(process.stdout.columns));
+
+//console.log(process.stdin);
+
+//console.log(process.cwd());
+//console.log(process.cpuUsage());
+//console.log(process.env);
+//console.log(process.uptime());
