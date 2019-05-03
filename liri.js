@@ -32,6 +32,10 @@ const errorBoxStyle = {
 // This will search the Bands in Town Artist Events API
 // https://rest.bandsintown.com/artists/${artist}events?app_id=[API_ID]
 function consertThis(artist) {
+  if (!artist){
+    print(["Missing Artist/Band Name"], errorBoxStyle);
+    return;
+  } 
   const BIT_ID = keys.bandintown.id;
   // API URL used for request
   let url = `https://rest.bandsintown.com/artists/${artist}/events?app_id=${BIT_ID}`;
