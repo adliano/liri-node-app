@@ -1,0 +1,13 @@
+
+usage: node liri.js <option> [name]
+Options:
+ concert-this <artist/band> : to display concerts info.
+
+ do-what-it-says : will read content from random.txt file and run command.
+
+ help : Display this help menu.
+
+ movie-this [movie_name] : Display info about movie.
+
+ spotify-this-song [song_name] : Display info about soung.
+ 
