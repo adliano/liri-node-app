@@ -19,7 +19,17 @@ This Application will use the follow APIs:
 ## The options are as follows:
 
 - `concert-this` Will take a Band or Artits name and will display the upcoming concert(s)
-  ![ConcertThis GIF](http://g.recordit.co/jkKxYxlBry.gif)
+
+  ![ConcertThis GIF](./images/concertThis.gif)
+
 - `spotify-this-song` Will take a song or artist name and will display info about the muisc(s)
+
+  ![SpotifyThisSong GIF](./images/spotifyThisSong.gif)
+
 - `movie-this` Will take a mivie name and display info about it
+
+  ![MovieThis GIF](./images/movieThis.gif)
+
 - `do-what-it-says` Will read a command from random.txt file and run it.
+
+  ![DoWhatItSay GIF](./images/doWhatItSays.gif)
