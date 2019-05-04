@@ -63,7 +63,7 @@ function consertThis(artist) {
         print(_venue);
       }
     })
-    .catch(function (error) {
+    .catch(function(error) {
       console.log("Error", error.message);
     });
 }
@@ -116,7 +116,7 @@ function spotifyThis(song) {
         //console.log(data);
       }
     })
-    .catch(function (error) {
+    .catch(function(error) {
       console.log("Error", error.message);
     });
 }
@@ -166,7 +166,7 @@ function movieThis(movie) {
       console.log(`Actors : ${dataObj.Actors}`);
       console.log("-".repeat(_consoleWidth));
     })
-    .catch(function (error) {
+    .catch(function(error) {
       console.log("Error", error.message);
     });
 }
@@ -182,7 +182,7 @@ Edit the text in random.txt to test out the feature for movie-this and concert-t
 */
 function doWhatItSay() {
   // File System used to read from text file
-  fs.readFile("./random.txt", "utf8", function (err, textData) {
+  fs.readFile("./random.txt", "utf8", function(err, textData) {
     // Check for error
     if (err) {
       return console.log(err);
@@ -197,13 +197,13 @@ function doWhatItSay() {
 /* * * * * * * * * * * * * help() * * * * * * * * * * * * * * * * * */
 /* **************************************************************** */
 function help() {
-  fs.readFile('./help.txt', 'utf8', function (error, data) {
+  fs.readFile("./help.txt", "utf8", function(error, data) {
     if (error) {
       return console.log(error);
     }
-    let dashLine = '-'.repeat(process.stdout.columns - 10);
+    let dashLine = "-".repeat(process.stdout.columns - 10);
     console.log(dashLine, `\n${data}\n`, dashLine);
-  })
+  });
 }
 /* ******************************************************************* */
 /* * * * * * * * * * * * * runLiri() * * * * * * * * * * * * * * * * * */
@@ -224,12 +224,14 @@ function runLiri(_command, _argv) {
     case "do-what-it-says":
       doWhatItSay();
       break;
-    case 'help':
+    case "help":
       help();
       break;
     default:
-      print([`Invalid Command "${_command}"`], errorBoxStyle);
-      help();
+      print(
+        [`Invalid Command ${_command || ""}`, "For Help use help option"],
+        errorBoxStyle
+      );
       break;
   }
 }
